@@ -132,11 +132,11 @@ app.post('/create-payment-intent', async (req, res) => {
 
 
 app.patch('/offer/payment/:id', async (req, res) => {
-  const { id } = req.params; // This is the propertyId
+  const { id } = req.params; 
   const { transactionId } = req.body;
 
   try {
-    const query = { propertyId: id }; // Query by propertyId, not _id
+    const query = { propertyId: id }; 
     const updateDoc = {
       $set: {
         status: 'bought',
@@ -155,19 +155,6 @@ app.patch('/offer/payment/:id', async (req, res) => {
     res.status(500).send({ error: error.message });
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
 // property 
 
 app.get('/property', async(req,res)=>{
@@ -187,30 +174,26 @@ app.delete('/reviews/:id', async (req, res) => {
   res.send(result);
 });
 
-// Route to remove the review from the user who posted it
+
 app.delete('/users/reviews/:email', async (req, res) => {
   const { email } = req.params;
 
   try {
-    // Find the user by email
+
     const user = await userCollection.findOne({ email });
 
     if (!user) {
       return res.status(404).send({ message: 'User not found' });
     }
-
-    // Filter out the review with the given reviewerEmail
     const updatedReviews = user.reviews.filter(
       (review) => review.reviewerEmail !== email
     );
-
-    // Update the user's reviews array
     const result = await userCollection.updateOne(
       { email },
       { $set: { reviews: updatedReviews } }
     );
 
-    // Send the result back to the client
+
     res.send(result);
   } catch (error) {
     console.error(error);
