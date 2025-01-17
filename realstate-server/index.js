@@ -203,12 +203,12 @@ app.delete('/users/reviews/:email', async (req, res) => {
 
 
 app.get('/reviews/:title', async (req, res) => {
-  const title = req.params.title; // Retrieve the title from the URL parameter
+  const title = req.params.title; 
   const query = ({ propertyTitle: title })
   
   try {
     const result = await reviewCollection.find(query).toArray();
-    res.send(result); // Send the result back as the response
+    res.send(result); 
   } catch (error) {
     console.error("Error fetching reviews:", error);
     res.status(500).send({ message: "An error occurred while fetching reviews" });
@@ -226,7 +226,7 @@ app.get('/myreview/:email', async(req,res)=>{
 
 
 app.delete('/myreview/:id', async (req, res) => {
-  const { id } = req.params; // The review ID to delete
+  const { id } = req.params;
 
   try {
     const result = await reviewCollection.deleteOne({ _id: new ObjectId(id) });
@@ -240,20 +240,6 @@ app.delete('/myreview/:id', async (req, res) => {
     res.status(500).send({ message: 'Error deleting review' });
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Backend route for fetching users by email
 app.get('/users',verifyToken, async (req, res) => {
