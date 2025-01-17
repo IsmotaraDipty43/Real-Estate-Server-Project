@@ -615,7 +615,7 @@ app.get('/myoffer/:email',async(req,res)=>{
 
 app.get('/broughtProperty/:email',verifyToken, async (req, res) => {
   const email = req.params.email;
-  const query = { agentEmail: email, status: 'bought' }; // Filter by both agentEmail and status
+  const query = { agentEmail: email, status: 'bought' }; 
   try {
     const result = await OfferCollection.find(query).toArray();
     res.send(result);
@@ -630,7 +630,7 @@ app.get('/getmyoffer/:id', async (req, res) => {
   const query = { propertyId: id };
 
   try {
-    const result = await OfferCollection.findOne(query); // Return a single document
+    const result = await OfferCollection.findOne(query); 
     if (result) {
       res.send(result); // Send the document directly
     } else {
