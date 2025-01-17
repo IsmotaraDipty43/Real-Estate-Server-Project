@@ -632,7 +632,7 @@ app.get('/getmyoffer/:id', async (req, res) => {
   try {
     const result = await OfferCollection.findOne(query); 
     if (result) {
-      res.send(result); // Send the document directly
+      res.send(result); 
     } else {
       res.status(404).send({ error: 'Offer not found' });
     }
@@ -662,26 +662,19 @@ app.post('/offers/update/:propertyId', async (req, res) => {
   const { propertyId } = req.params;
   const { acceptedOfferId } = req.body;
 
-  // Accept the selected offer
   const acceptQuery = { _id: new ObjectId(acceptedOfferId) };
   const acceptUpdate = { $set: { status: "accepted" } };
   await OfferCollection.updateOne(acceptQuery, acceptUpdate);
-
-  // Reject all other offers for the same property
   const rejectQuery = { propertyId: propertyId, _id: { $ne: new ObjectId(acceptedOfferId) } };
   const rejectUpdate = { $set: { status: "rejected" } };
   await OfferCollection.updateMany(rejectQuery, rejectUpdate);
 
   res.send({ message: "Offer status updated successfully." });
 });
-
-
-
-    // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
-    // Ensures that the client will close when you finish/error
+ 
     // await client.close();
   }
 }
