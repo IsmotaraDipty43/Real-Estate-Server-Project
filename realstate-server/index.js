@@ -557,7 +557,7 @@ app.get('/wishlist/:email', async (req, res) => {
   const email = req.params.email;
  const query = ({ userEmail: email })
   try {
-    const result = await wishCollection.find(query).toArray(); // Query with a filter object
+    const result = await wishCollection.find(query).toArray(); 
     res.send(result);
   } catch (error) {
     console.error('Error fetching wishlist:', error);
@@ -572,23 +572,19 @@ app.get('/wishlist/:email', async (req, res) => {
 
 
 app.post("/reviews", async (req, res) => {
-  const { propertyTitle, reviewDescription, reviewerName, reviewerImage, reviewerEmail ,agentName } = req.body; // Use the correct names
-
-  // Create a timestamp for review creation
+  const { propertyTitle, reviewDescription, reviewerName, reviewerImage, reviewerEmail ,agentName } = req.body; 
   const createdReviewTime = new Date().toISOString();
 
   try {
     const newReview = {
-      reviewerEmail,        // Use the correct variable names here
+      reviewerEmail,        
       propertyTitle,
       reviewerName,
       reviewerImage,
-      reviewDescription,    // Make sure this matches the frontend field
+      reviewDescription,   
       createdReviewTime,
       agentName,
     };
-
-    // Save the review to the database
     await reviewCollection.insertOne(newReview);
     res.send({ message: "Review added successfully" });
   } catch (error) {
