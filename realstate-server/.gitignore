@@ -1,0 +1,5 @@
+node_modules
+.env
+.vercel
+# Ignore Firebase Admin SDK service account key
+realstate-be053-firebase-adminsdk-kg6ud-d4293adbca.json
