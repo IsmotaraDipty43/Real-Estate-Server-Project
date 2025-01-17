@@ -249,7 +249,7 @@ app.get('/users',verifyToken, async (req, res) => {
     const user = await userCollection.find().toArray();
 
     if (user) {
-      res.status(200).send(user); // Send back the user data
+      res.status(200).send(user); 
     } else {
       res.status(404).send({ message: 'User not found' });
     }
@@ -265,10 +265,6 @@ app.get('/specificuser/:email', async(req,res)=>{
   const result = await userCollection.findOne(query)
   res.send(result)
 })
-
-
-
-
 
  app.get('/user/details', async(req,res)=>{
   const { email } = req.query;
@@ -288,17 +284,11 @@ app.get('/specificuser/:email', async(req,res)=>{
 app.get('/users/adminuser/:email', verifyToken, async (req, res) => {
   try {
     const email = req.params.email;
-
-    // Ensure the email in the URL matches the email in the decoded token
     if (email !== req.decoded?.email) {
       return res.status(403).send({ message: 'Unauthorized error' });
     }
-
-    // Perform a case-insensitive query
     const query = { email: { $regex: new RegExp(`^${email}$`, 'i') } };
     const user = await userCollection.findOne(query);
-
-    // Check if the user is an admin
     const admin = user?.role === 'Admin' || false;
     res.send({ admin });
   } catch (error) {
@@ -309,10 +299,9 @@ app.get('/users/adminuser/:email', verifyToken, async (req, res) => {
 
   
 // Promote user to admin
-// Endpoint to promote user to 'Admin' or 'Agent'
 app.patch('/users/role/:id', verifyToken, verifyAdmin, async (req, res) => {
   const { id } = req.params;
-  const { role } = req.body;  // 'Admin' or 'Agent'
+  const { role } = req.body; 
 
   if (!role) {
     return res.status(400).send({ message: 'Role is required' });
