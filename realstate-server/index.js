@@ -5,7 +5,7 @@ const cors = require("cors");
 require("dotenv").config()
 const jwt = require('jsonwebtoken');
 const stripe=require('stripe')(process.env.SECRECT_KEY_STRIPE)
-const admin = require("firebase-admin"); // Import Firebase Admin SDK
+const admin = require("firebase-admin"); 
 const serviceAccount = require("./realstate-be053-firebase-adminsdk-kg6ud-d4293adbca.json");
 
 admin.initializeApp({
@@ -36,7 +36,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
+
     // await client.connect();
     const propertiyCollection = client.db('realStateDB').collection('properties')
     const reviewCollection = client.db('realStateDB').collection('reviews')
@@ -62,23 +62,23 @@ const verifyToken = (req, res, next) => {
     return res.status(401).send({ message: 'Authorization header missing' });
   }
 
-  // Extract the token from the Authorization header
+
   const token = authorization.split(' ')[1];
 
-  // If token is missing after split
+
   if (!token) {
     return res.status(401).send({ message: 'Token missing' });
   }
 
-  // Verify the token with JWT
+
   jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
     if (error) {
       return res.status(401).send({ message: 'Invalid or expired token', error });
     }
 
-    // Attach the decoded information to the request object
+
     req.decoded = decoded;
-    next(); // Proceed to the next middleware or route handler
+    next(); 
   });
 };
 
@@ -93,10 +93,10 @@ const verifyAdmin = async (req, res, next) => {
       return res.status(401).send({ message: 'Unauthorized: Email not found in token' });
     }
 
-    const query = { email: { $regex: new RegExp(`^${email}$`, 'i') } }; // Case-insensitive search
+    const query = { email: { $regex: new RegExp(`^${email}$`, 'i') } };
     const user = await userCollection.findOne(query);
 
-    console.log('User retrieved from DB:', user);  // Check user object
+    console.log('User retrieved from DB:', user);  
 
     const isAdmin = user?.role === 'Admin';
     if (!isAdmin) {
@@ -111,18 +111,12 @@ const verifyAdmin = async (req, res, next) => {
 };
 
 
-
-
-
-
-
-
 app.post('/create-payment-intent', async (req, res) => {
   const { amount } = req.body;
-  console.log('Amount:', amount); // Debug incoming data
+  console.log('Amount:', amount); 
   try {
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: amount * 100, // Stripe requires the amount in cents
+      amount: amount * 100, 
       currency: 'usd',
       payment_method_types: ['card'],
     });
@@ -131,7 +125,7 @@ app.post('/create-payment-intent', async (req, res) => {
       clientSecret: paymentIntent.client_secret,
     });
   } catch (error) {
-    console.error('Error creating payment intent:', error.message); // Log the error
+    console.error('Error creating payment intent:', error.message); 
     res.status(500).send({ error: error.message });
   }
 });
