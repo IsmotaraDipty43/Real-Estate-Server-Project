@@ -327,39 +327,26 @@ app.patch('/users/role/:id', verifyToken, verifyAdmin, async (req, res) => {
   }
 });
 
-
-
-
-
-
-
-
-
-
-
 app.delete('/users/:email', verifyToken, verifyAdmin, async (req, res) => {
   const email = req.params.email;
 
   try {
-    // Find the user in MongoDB using case-insensitive query
+ 
     const user = await userCollection.findOne({
-      email: { $regex: new RegExp(`^${email}$`, 'i') } // Case-insensitive search
+      email: { $regex: new RegExp(`^${email}$`, 'i') } 
     });
 
     if (!user) {
       return res.status(404).send({ message: 'User not found' });
     }
-
-    // Delete the user from MongoDB
     const mongoResult = await userCollection.deleteOne({
-      email: { $regex: new RegExp(`^${email}$`, 'i') } // Case-insensitive delete
+      email: { $regex: new RegExp(`^${email}$`, 'i') } 
     });
 
     if (mongoResult.deletedCount === 0) {
       return res.status(404).send({ message: 'Failed to delete user from MongoDB' });
     }
 
-    // Delete the user from Firebase Authentication
     const userRecord = await admin.auth().getUserByEmail(email);
     await admin.auth().deleteUser(userRecord.uid);
 
