@@ -359,17 +359,6 @@ app.delete('/users/:email', verifyToken, verifyAdmin, async (req, res) => {
   }
 });
 
-
-
-
-
-
-
-
-
-
-
-
 app.post('/users', async(req,res)=>{
   const userData=req.body;
   const query = {email: userData.email}
@@ -381,14 +370,11 @@ app.post('/users', async(req,res)=>{
   res.send(result);
 })
 
-
-
-// Verify a property by ID
 app.patch('/property/verify/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const result = await propertiyCollection.updateOne(
-      { _id: new ObjectId(id) }, // Use ObjectId directly here
+      { _id: new ObjectId(id) }, 
       { $set: { verificationStatus
         : 'Verified' } }
     );
@@ -404,13 +390,12 @@ app.patch('/property/verify/:id', async (req, res) => {
   }
 });
 
-
 // Reject a property by ID
 app.patch('/property/reject/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const result = await propertiyCollection.updateOne(
-      { _id: new ObjectId(id) }, // Use ObjectId directly here
+      { _id: new ObjectId(id) }, 
       { $set: { verificationStatus
         : 'Rejected' } }
     );
@@ -426,26 +411,19 @@ app.patch('/property/reject/:id', async (req, res) => {
   }
 });
 
-
-
 // Route to mark an agent as fraud
 app.patch('/users/fraud/:id', verifyToken, verifyAdmin, async (req, res) => {
   const { id } = req.params;
 
   try {
-    // Find the user in the database
     const user = await userCollection.findOne({ _id: new ObjectId(id) });
 
     if (!user) {
       return res.status(404).send({ message: 'User not found' });
     }
-
-    // Check if the user is an agent
     if (user.role !== 'Agent') {
       return res.status(400).send({ message: 'User is not an agent' });
     }
-
-    // Mark the user as fraud
     const update = {
       $set: { role: 'Fraud' },
     };
@@ -455,10 +433,8 @@ app.patch('/users/fraud/:id', verifyToken, verifyAdmin, async (req, res) => {
     if (result.modifiedCount === 0) {
       return res.status(400).send({ message: 'Failed to mark user as fraud' });
     }
-
-    // Remove properties added by the fraud agent
     await propertiyCollection.deleteMany(
-      { addedBy: user.email }  // Assuming 'addedBy' holds the user's email
+      { addedBy: user.email } 
     );
     
 
