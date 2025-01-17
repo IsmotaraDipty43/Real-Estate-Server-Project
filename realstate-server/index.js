@@ -540,13 +540,9 @@ app.post("/wishlist", async (req, res) => {
       priceRange,
       userEmail,
     });
-
-    // Send success response
     res.send({ message: "Property added to wishlist successfully" });
   } catch (error) {
     console.error("Error adding to wishlist:", error);
-
-    // Send error response
     res.status(500).send({ message: "Error adding to wishlist" });
   }
 });
@@ -556,11 +552,6 @@ app.get('/allwishlist', async(req,res)=>{
   const result = await wishCollection.find().toArray()
   res.send(result)
 })
-
-
-
-
-
 
 app.get('/wishlist/:email', async (req, res) => {
   const email = req.params.email;
