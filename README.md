@@ -1,4 +1,4 @@
-#* HomeScape Backend API
+# HomeScape Backend API
 
 This is the backend server for the **HomeScape** real estate platform. It provides authentication, property management, and secure transaction handling. The project uses **Node.js**, **Express**, **JWT** for authentication, and **MongoDB** for data storage.
 
@@ -49,7 +49,7 @@ This is the backend server for the **HomeScape** real estate platform. It provid
 
 [Frontend GitHub Repository](https://github.com/IsmotaraDipty43/Resturant-Mangment-Client-Full-Stack)
 
-##* Technology Stack
+## Technology Stack
 
 - **Backend Framework**: Node.js, Express.js
 - **Database**: MongoDB
