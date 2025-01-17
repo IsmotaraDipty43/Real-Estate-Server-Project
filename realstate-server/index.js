@@ -448,7 +448,6 @@ app.patch('/users/fraud/:id', verifyToken, verifyAdmin, async (req, res) => {
 app.post('/properties', verifyToken, async (req, res) => {
   try {
     const property = req.body;
-    // Ensure priceRange is an object with minimum and maximum price
     if (property.priceRange && typeof property.priceRange === 'object') {
       const result = await propertiyCollection.insertOne(property);
       res.send(result);
@@ -528,7 +527,7 @@ app.post("/wishlist", async (req, res) => {
   } = req.body;
 
   try {
-    // Insert the full property data into the wishlist collection
+ 
     await wishCollection.insertOne({
       propertyId,
       title,
