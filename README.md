@@ -47,7 +47,7 @@ This is the backend server for the **HomeScape** real estate platform. It provid
 
 ##* Frontend GitHub Link
 
-[Frontend GitHub Repository](https://github.com/IsmotaraDipty43/Resturant-Mangment-Client-Full-Stack)
+[Frontend GitHub Repository](https://github.com/Programming-Hero-Web-Course4/b10a12-client-side-IsmotaraDipty43)
 
 ## Technology Stack
 
