@@ -43,11 +43,11 @@ This is the backend server for the **HomeScape** real estate platform. It provid
 
 ## Live Demo
 
-[https://realstate-server-rouge.vercel.app/](#)
+[Live](https://realstate-server-rouge.vercel.app/)
 
 ## Frontend GitHub Link
 
-[Frontend GitHub Repository](https://github.com/Programming-Hero-Web-Course4/b10a12-client-side-IsmotaraDipty43)
+[Frontend GitHub Repository](https://github.com/IsmotaraDipty43/HomeScape_Real-State-Client)
 
 ## Technology Stack
 
