@@ -281,6 +281,31 @@ app.get('/specificuser/:email', async(req,res)=>{
   }
   })
 
+
+  app.get('/allusersdata/:email', async (req, res) => {
+    try {
+      const useremail = req.params.email.toLowerCase(); // Convert input email to lowercase
+      const query = { email: { $regex: new RegExp(`^${useremail}$`, "i") } }; // Case-insensitive query
+      const result = await userCollection.findOne(query);
+  
+      if (!result) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      res.json(result);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+  
+  
+
+
+
+
+
+
 app.get('/users/adminuser/:email', verifyToken, async (req, res) => {
   try {
     const email = req.params.email;
@@ -642,6 +667,17 @@ app.get('/getmyoffer/:id', async (req, res) => {
   }
 });
 
+app.patch("/usersupdate/:email", async (req, res) => {
+  const { email } = req.params;
+  const { phone, address } = req.body;
+
+  const result = await userCollection.updateOne(
+    { email },
+    { $set: { phone, address } }
+  );
+
+  res.send(result);
+});
 
 
 app.get('/offer/:title', async (req, res) => {
@@ -671,6 +707,35 @@ app.post('/offers/update/:propertyId', async (req, res) => {
 
   res.send({ message: "Offer status updated successfully." });
 });
+
+app.get("/totalcount", async (req, res) => {
+  try {
+    // Count the total number of users
+    const userCount = await userCollection.countDocuments();
+
+    // Fetch offers with status "bought" (ensure it's an array)
+    const offers = await OfferCollection.find({ status: "bought" }).toArray(); // Use toArray() for native driver
+
+    // Check if the offers result is an array
+    const boughtCount = Array.isArray(offers) ? offers.length : 0;
+    const totalIncome = Array.isArray(offers)
+      ? offers.reduce((sum, offer) => sum + parseFloat(offer.offerAmount || 0), 0)
+      : 0;
+
+    // Send the response with the counts
+    res.json({
+      userCount,
+      boughtCount,
+      totalIncome
+    });
+
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
     // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
